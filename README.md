@@ -99,9 +99,10 @@ The following is the file structure of the project that were created or modified
 ### Application pages
 
 - Index: User's dashboard for raising personalized job tickets.
-- Profile: User's profile for assigning job tickets to specific users and updating their access and profile details.
+- Profile: User's profile for assigning job tickets to specific users and updating their access (By Admin) and profile details.
 - Escalated Tickets: Page for tracking and updating escalated users tickets.
-- Super Access: Page accessible to only Standard and Admin users for assigning and tracking job tickets for any user.
+- Ticket Reports: Page for viewing and querying support tickets.
+- Super Access: Page accessible to only Standard and Admin users for assigning and tracking job tickets for any user. Also a route where access of other users are being updated by Admin 
 
 ## How to launch application
 
