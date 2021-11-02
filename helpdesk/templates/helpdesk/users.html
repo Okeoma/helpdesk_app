@@ -1,0 +1,59 @@
+{% extends "helpdesk/layout.html" %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+<hr />
+<div class="card">
+    <div class="card-body">
+	    <center>		    
+	        <button class="btn btn-primary" onclick="window.location.href='{% url 'index' %}'"> Back to Dashboard</button>
+            
+        </center>        
+	</div>
+</div>
+<hr />
+<center><h5 class="label-account">User Accounts</h5></center>
+<center>	
+    {% if all_users %}    
+        <table>
+            <tr>
+			    <th>ID</th>
+                <th>Username</th>
+                <th>Firstname</th>
+				<th>Lastname</th>
+				<th>Email</th>
+				<th>Access Level</th>
+                <th>Role</th>				
+				<th>Location</th>
+            </tr>
+		{% for user in all_users %}
+            <tr>
+                <td> 
+				    <a href="{% url 'profile' user.username %}">
+				        <u><b>{{user.id}}</b></u>
+					</a>
+				</td>
+				<td>
+				    <a href="{% url 'profile' user.username %}">
+				    <u><b>{{user.username}}</b></u>
+					</a>
+				</td>
+                <td>{{user.first_name|title}}</td>
+				<td>{{user.last_name|title}}</td>
+				<td>{{user.email}}</td>
+				<td>{{user.access}}</td>
+				<td>{{user.role|title}}</td>
+                <td>{{user.location|title}}</td>				               
+            </tr>	
+            
+        {% endfor %}           
+               
+        </table>  
+	{% endif %} 	
+</center>
+<hr />
+{% endif %} 
+
+
+{% endblock %}

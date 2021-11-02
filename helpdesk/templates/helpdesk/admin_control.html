@@ -1,0 +1,20 @@
+{% if user.is_authenticated %}
+<div class="card">
+
+    <center><b id="admin_level">Update Access Level for {{profile_account.username|title}}</b></center>
+	<center><b id="access_update" ></b></center>
+
+<div class="card-body">
+
+    <form action="{% url 'admin_control' profile_account.username %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}	    
+	    
+        {{ updateform.as_p }}		
+        			
+	    <input type="submit" value="Update" onclick="document.querySelector('#access_update').innerHTML = 'Successfully Updated User Access for {{ profile_account.username }}!';">
+    </form>
+    
+
+</div>
+</div>
+{% endif %}

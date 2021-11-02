@@ -1,0 +1,89 @@
+{% if user.is_authenticated %}
+<div class="card">
+    <div class="card-body">
+	    <div>		
+		    {%if user.is_authenticated and user.id != profile_account.id %}
+			    <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">
+	            <strong class="card-title" id="profile_name">{{profile_account.first_name|capfirst}} {{profile_account.last_name|capfirst}}</strong>
+				<br /><center><b id="role">Job role: <i>{{profile_account.role}}</i></b></center>
+				<br /><center><b>Access level: <u>{{profile_account.access}}</u></b></center>
+				
+				<hr />
+	        {% else %}
+			    <a href="{% url 'account' username=request.user %}" class="card-link btn btn-outline-helpdesk">
+                    <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">	                
+	                <strong class="card-title" id="profile_name">{{profile_account.first_name|capfirst}} {{profile_account.last_name|capfirst}}</strong>
+				</a>
+				<hr />
+				<button onclick="window.location.href='{% url 'account' username=request.user %}'"> Update your profile details</button>
+	        {% endif %}
+            
+            {%if user.access == 'Admin' %}			
+                {% include "helpdesk/admin_control.html" %} 
+            {% endif %}				
+		        <object align="right" class="profile_info">
+			        <span class="btn-total-person">Username: <strong>{{profile_account.username|capfirst}};</strong></span>
+			        <span class="btn-total-person">Total ticket(s): <strong>{{ticket_count}}</strong> </span>
+			    </object>
+			
+		</div>
+        
+		<button type="button" class="btn-total-person persons" data-toggle="modal" data-target="#junior">{{junior_count}} Subordinates</button>
+        <button type="button" class="btn-total-person persons" data-toggle="modal" data-target="#senior"><span id="seniors">{{senior_count}}</span> Supervisors</button>        
+        
+        </p>
+		<hr />
+		<div class="modal fade" id="junior" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title details-name" id="exampleModalLongTitle">Total Subordinates: {{junior_count}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for person in junior %}
+                            <p class="card-header">{{person.junior|title}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		<div class="modal fade" id="senior" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title details-name" id="exampleModalLongTitle">Total Supervisors: {{senior_count}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for person in senior %}
+                            <p class="card-header">{{person.senior|title}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+		{%if user.access == 'Admin' %}
+        <p class="card-text"><small class="text-muted"></small></p>
+        {% if user.is_authenticated and user.id != profile_account.id %}
+            <p class="card-text">
+            {% if person_count > 0 %}
+                <button id="supervising_btn" data-id="{{profile_account.id}}" type="button" class="btn btn-primary">Supervising</button>
+            {% else %}
+                <button id="supervising_btn" data-id="{{profile_account.id}}" type="button" class="btn btn-outline-primary">Supervise</button>
+            {%endif%}
+            </p>
+        {% endif %}
+		<!--Admin Access-->
+		{% include "helpdesk/supervisor.html" %}		
+		{% include "helpdesk/subordinate.html" %}
+		{% endif %}
+    </div>
+</div>        
+{% endif %}

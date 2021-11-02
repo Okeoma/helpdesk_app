@@ -1,0 +1,36 @@
+{% if user.is_authenticated %}
+
+    {% if request.user.first_name == "" %}
+    <div class="card">
+        <div class="card-body">	               
+            <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		    <strong class="no_profilename">Update your profile details and picture</strong>			
+		    <object align="right" class="profile_info"> 
+		        <span class="btn-total-person"><strong>Email Address: {{user.email}}</strong> </span>			
+		    </object>
+        </div>
+    </div>
+    {% else %}
+	<div class="card">
+        <div class="card-body">
+            <a href="{% url 'profile' user.username %}" class="card-link btn btn-outline-helpdesk">
+                <img class="img-fluid" src="{{picture.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		        <strong id="profile_name">{{user.first_name|capfirst}} {{user.last_name|capfirst}}</strong>
+			</a> 
+			
+		    <object align="right" class="profile_info"> 
+		        <span class="btn-total-person"><strong>Email Address: {{user.email}}</strong> </span>			
+		    </object>
+        </div>
+    </div>
+    {% endif%}
+	
+{% else %}
+	<div class="card">
+        <div class="card-body">	               
+            <img class="img-fluid" src="{{helpdesk.image.url}}" alt="Profile Picture" style="max-height:180px">            
+		    <strong class="no_profilename">Customer Support</strong>
+		    
+        </div>
+    </div>
+{% endif%}

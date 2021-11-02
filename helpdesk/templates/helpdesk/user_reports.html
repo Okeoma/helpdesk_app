@@ -1,0 +1,107 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}HelpDesk Dynamics{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">		
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>        
+    <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
+    <link href="{% static 'helpdesk/styles.css' %}" rel="stylesheet">
+       
+    </head>
+    <body>
+	
+    {% include "helpdesk/head.html" %}
+    <center>	
+	<center><strong class="all_tickets">Choose an Option to View the Reports</h3></strong></center>
+	
+	<button class="btn btn-sm btn-outline-primary" id="alltickets" onclick="window.location.href='{% url 'user_periods' profile_account 'alltickets' 'period' %}';">All Tickets</button>
+    <button class="btn btn-sm btn-outline-primary" id="opentickets" onclick="window.location.href='{% url 'user_periods' profile_account 'opentickets' 'period' %}';">All Open Tickets</button>
+    <button class="btn btn-sm btn-outline-primary" id="closedtickets" onclick="window.location.href='{% url 'user_periods' profile_account 'closedtickets' 'period' %}';">All Closed Tickets</button> 
+                
+		<div id="summary-view">
+		    <h4 id="summary_header">{{title}} - Total: {{total}}</h4>
+	        <div class="card" id="summary_head">
+		        <h5 class="card-header">
+			        Tickets Summary
+			    </h5>
+		    
+	            <div class="card-body">			
+                        <p class="card-text"><b>{{profile_account|capfirst}}'s Ticket Totals: </b> All Tickets: <b>{{alltickets_count}}</b>, All Open Tickets: <b>{{opentickets_count}}</b>, All Closed Tickets: <b>{{closedtickets_count}}</b></p>				        
+					    <a href="{% url 'view_reports' %}" class="btn btn-ticket">Back to General Ticket Reports</a>
+	            </div>	
+	        </div>
+		</div>	
+		
+        <div id="tickets-view">
+		
+		{% if reports == "alltickets" %}	    			   
+		    <button class="btn btn-sm btn-outline-primary" id="today" onclick="window.location.href='{% url 'user_periods' profile_account 'alltickets' 'today' %}';">Today's Tickets</button>
+            <button class="btn btn-sm btn-outline-primary" id="week" onclick="window.location.href='{% url 'user_periods' profile_account 'alltickets' 'week' %}';">This Week's Tickets</button>
+            <button class="btn btn-sm btn-outline-primary" id="month" onclick="window.location.href='{% url 'user_periods' profile_account 'alltickets' 'month' %}';">This Month's Tickets</button>
+		    {% if tickets %}
+				<h5 class="update_info">All Tickets for {{profile_account|capfirst}}</h5>
+			{% else %}
+                <h5 class="update_info">There are no Tickets for {{profile_account|capfirst}}</h5>
+		    {% endif %}	
+        {% elif reports == "opentickets" %}
+            <button class="btn btn-sm btn-outline-primary" id="today" onclick="window.location.href='{% url 'user_periods' profile_account 'opentickets' 'today' %}';">Today's Tickets</button>
+            <button class="btn btn-sm btn-outline-primary" id="week" onclick="window.location.href='{% url 'user_periods' profile_account 'opentickets' 'week' %}';">This Week's Tickets</button>
+            <button class="btn btn-sm btn-outline-primary" id="month" onclick="window.location.href='{% url 'user_periods' profile_account 'opentickets' 'month' %}';">This Month's Tickets</button>
+		    {% if tickets %}
+				<h5 class="update_info">Open Tickets {{profile_account|capfirst}}</h5>
+			{% else %}
+                <h5 class="update_info">There are no Open Tickets for {{profile_account|capfirst}}</h5>
+		    {% endif %}
+		{% elif reports == "closedtickets" %}
+            <button class="btn btn-sm btn-outline-primary" id="today" onclick="window.location.href='{% url 'user_periods' profile_account 'closedtickets' 'today' %}';">Today's Tickets</button>
+            <button class="btn btn-sm btn-outline-primary" id="week" onclick="window.location.href='{% url 'user_periods' profile_account 'closedtickets' 'week' %}';">This Week's Tickets</button>
+            <button class="btn btn-sm btn-outline-primary" id="month" onclick="window.location.href='{% url 'user_periods' profile_account 'closedtickets' 'month' %}';">This Month's Tickets</button>
+		    {% if tickets %}
+				<h5 class="update_info">Closed Tickets {{profile_account|capfirst}}</h5>
+			{% else %}
+                <h5 class="update_info">There are no Closed Tickets for {{profile_account|capfirst}}</h5>
+		    {% endif %}	
+        {% endif %}
+			
+		{% if tickets %}
+		<table>
+            <tr>
+			    <th>ID</th>
+				<th>Title</th>				
+                <th>Username</th>
+                <th>Customer</th>				
+				<th>Importance Level</th>
+				<th>Date & Time</th>
+                <th>Closed Status</th>			
+            </tr>
+		{% for ticket in tickets %}
+            <tr>
+                <td><b>{{ticket.id}}</b></td>
+				<td>
+				   <a href="{% url 'ticket_view' ticket=ticket.id %}" class="btn btn-primary">
+				    <u><b>{{ticket.title|title}}</b></u>
+					</a>
+				</td>
+				<td>{{ticket.user}}</td>
+				<td>{{ticket.customer|title}}</td>                				
+				<td>{{ticket.ticketrank_set.count}}</td>
+				<td>{{ticket.date}}</td>
+				<td>{{ticket.closed|title}}</td>               		               
+            </tr>	
+            
+        {% endfor %}              
+        </table> 
+        {% endif %}		
+        </div>
+		
+    </center>
+	
+   	<hr id="report_line">
+	
+    </body>
+</html>

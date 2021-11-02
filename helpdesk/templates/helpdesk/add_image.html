@@ -1,0 +1,37 @@
+{% extends "helpdesk/layout.html" %}
+
+{% block body %}
+
+{% include "helpdesk/profile_picture.html" %}
+<hr />
+<div class="card">
+    <div class="card-body">	
+    {% if imageCreated %}
+      <h3 id="update_picture">Succesfully updated : {{imageCreated.user | title}}'s Profile Image</h3>
+      <img src="{{ imageCreated.image.url}}" alt="connect" style="max-height:300px">
+    {% endif %}
+    {% if message %}
+        <div class="data-info">{{ message }}</div>
+    {% endif %}
+    <div class="add-image">
+        <h2 class="title">Select a New Profile Image</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="btn-right">
+                <input class="btn btn-outline-dark" type="submit" value="Upload">
+            </div>
+        </form>
+    </div>
+	</div>	
+</div>
+<hr />
+<div class="card">
+    <div class="card-body" style="background-color:#00001a;">
+	    <center>		    
+	        <button onclick="window.location.href='{% url 'index' %}'"> Go to Dashboard</button>            
+        </center>        
+	</div>
+</div>
+<hr />
+{% endblock %}

@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+    <hr />
+    <center>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'user_view' %}'"> View All Users</button>
+    </center>
+    <hr />
+{% endif %}

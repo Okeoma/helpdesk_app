@@ -1,0 +1,31 @@
+{% if user.is_authenticated %}
+<div class="alert alert-success"  role="alert">
+    <center><h5>Supervisors</h5></center>
+	<center><b id="upline" ></b></center>
+</div>
+<hr />	
+
+<b>User:</b> {{profile_account.username|capfirst}}
+
+<h6>Supervised by</h6>
+<ul>
+    {% for person in senior %}
+	    <li>{{ person.senior|capfirst }}</li>
+	{% empty %}	
+		<li>No Supervisor</li>
+	{% endfor %}
+</ul>	
+Total Supervisors = {{senior_count}}
+<h6>Add or Remove Supervisor</h6>
+
+<form action="{% url 'supervisor' profile_account.username %}" method="post">
+    {% csrf_token %}
+	<select name="username">
+	    {% for user in non_senior %}
+		    <option value="{{ user.username}}">{{user.username|capfirst}} </option>
+	    {% endfor %}
+	</select>
+	<input type="submit" onclick="document.querySelector('#upline').innerHTML = 'Successfully Updated!';">
+</form>
+<hr />
+{% endif %}

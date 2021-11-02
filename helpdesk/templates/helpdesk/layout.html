@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}HelpDesk Dynamics{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">		
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>        
+    <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
+    <link href="{% static 'helpdesk/styles.css' %}" rel="stylesheet">
+	
+</head>
+
+<body>
+{% include "helpdesk/head.html" %}    
+{% block extrabody %}{% endblock %}
+
+<div class="row" id="helpdesk">
+<div class="sidebar col-lg-3 col-md-4">
+
+{% with request.resolver_match.url_name as url_name %}
+    {% if url_name == 'index' %}
+        {% include "helpdesk/profile_picture.html" %} 
+            <hr />	
+        {% include "helpdesk/post_form.html" %}
+		{% if user.is_authenticated %}	
+		    <hr />
+        <center>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'customer_view' %}'"> View or Register Customers</button>
+        </center>		
+	        <hr />
+        {% endif %}			
+	{% elif url_name == 'login' %}
+        {% include "helpdesk/profile_picture.html" %}	
+	{% elif url_name == 'register' %}
+        {% include "helpdesk/profile_picture.html" %}
+	{% elif url_name == 'account' %}
+        <div class="card">
+            <div class="card-body">	               
+                <img class="img-fluid" src="{{helpdesk.image.url}}" alt="Profile Picture" style="max-height:180px">            
+		        <strong class="no_profilename">Customer Support</strong>		    
+            </div>
+        </div>
+    {% elif url_name == 'add_image' %}
+        <div class="card">
+            <div class="card-body">	               
+                <img class="img-fluid" src="{{helpdesk.image.url}}" alt="Profile Picture" style="max-height:180px">            
+		        <strong class="no_profilename">Customer Support</strong>		    
+            </div>
+        </div>
+    {% elif url_name == 'customer_view' %}
+		{% include "helpdesk/profile_picture.html" %}
+        <hr />
+            <center><h5>Add Customer</h5></center>	
+		<hr />
+        <div class="card" id="regular_form" style="padding:20px;">
+            <div class="card-body">
+                <form action="{% url 'add_customer' %}" method="post">
+                    {% csrf_token %}
+			        {{ form.as_p }}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    </div>            
+                </form>
+		        {% if message %}
+                    <div class="data-info">{{ message }}</div>
+                {% endif %}
+            </div>
+        </div>	
+    {% elif url_name == 'edit_customer' %}
+		{% include "helpdesk/profile_picture.html" %}		
+	{% elif url_name == 'ticket_view' %}
+		<div class="card">
+		<center>
+            <div class="card-body">	               
+                <img class="img-fluid" src="{{troubleticket.image.url}}" alt="Profile Picture" style="max-height:180px">		        		    
+            </div>
+		</center>
+        </div>		
+	{% elif url_name == 'super' %}
+        {% include "helpdesk/profile_picture.html" %} 
+            <hr />	        
+		{% include "helpdesk/adminticket_form.html" %}
+        {% include "helpdesk/personel.html" %}
+        {% if user.is_authenticated %}	
+        <center>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'view_reports' %}';"> Ticket Reports</button>
+        </center>		
+	        <hr />		
+        <center>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'customer_view' %}'"> View or Register Customers</button>
+        </center>		
+	        <hr />		
+		{% endif %}
+	{% elif url_name == 'escalate' %}
+	    {% include "helpdesk/profile_picture.html" %} 
+            <hr />		
+        {% include "helpdesk/post_form.html" %}
+	{% elif url_name == 'user_view' %}
+	    {% include "helpdesk/profile_picture.html" %} 
+            <hr />	
+	{% elif url_name == 'profile' %}
+	    {% include "helpdesk/profile_account.html" %} 
+            <hr />          			
+        {% include "helpdesk/profile_ticket.html" %}
+	
+    {% endif %}
+{% endwith %}
+   
+</div>	
+
+<div class="main col-lg-9 col-md-8">
+        {% block body %}
+        {% endblock %}
+</div>
+</div>
+    {% if user.is_authenticated %}
+        <ul class="pagination justify-content-center">
+            {% if tickets.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ tickets.previous_page_number }}">
+                    Previous
+                </a>
+            </li>
+            {% endif %}
+            {%if tickets.paginator.num_pages > 1 %}
+            {% for num in tickets.paginator.page_range %}
+            {% if tickets.number == num %}
+            <li class="page-item active">
+                <a class="page-link">{{ num }}</a>
+            </li>
+            {% elif num > tickets.number|add:'-3' and num < tickets.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if tickets.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ tickets.next_page_number }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="{% static 'helpdesk/main.js' %}"></script>
+
+</html>

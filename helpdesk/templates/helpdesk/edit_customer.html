@@ -1,0 +1,64 @@
+{% extends "helpdesk/layout.html" %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-body">	               
+            <img class="img-fluid" src="{{helpdesk.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		    <strong id="no_profilename">Edit Customer details for {{profile.customer}}</strong>			
+		    <object align="right" class="profile_info"> 
+		        <span class="btn-total-person"><strong>Company Name: {{profile.company}}</strong> </span>			
+		    </object>
+        </div>
+    </div>
+<hr />
+<div class="container Account">
+    {% if message %}
+        <div class="data-info">{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'edit_customer' profile.id %}" method="POST" >
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="label-account"><strong>Customer</strong></label>
+            <input class="form-control" type="text" name="first_name" placeholder="Customer" value="{{profile.customer|title}}" disabled="true">
+        </div>
+        <div class="form-group">
+            <label class="label-account"><strong>Firstname</strong></label>
+            <input class="form-control" type="text" name="firstname" placeholder="Firstname" value="{{profile.firstname|title}}">
+        </div>
+		<div class="form-group">
+            <label class="label-account"><strong>Lastname</strong></label>
+            <input class="form-control" type="text" name="lastname" placeholder="Lastname" value="{{profile.lastname|title}}">
+        </div>
+        <div class="form-group">
+            <label class="label-account"><strong>Email</strong></label>
+            <input class="form-control" type="email" name="email" placeholder="Email" value="{{profile.email}}">
+        </div>
+		<div class="form-group">
+            <label class="label-account"><strong>Phone no.</strong></label>
+            <input class="form-control" type="text" name="phone_no" placeholder="Phone no." value="{{profile.phone_no}}">
+        </div>
+		<div class="form-group">
+            <label class="label-account"><strong>Company</strong></label>
+            <input class="form-control" type="text" name="company" placeholder="Company" value="{{profile.company}}">
+        </div>
+        <div class="form-group">
+            <label class="label-account"><strong>Location</strong></label>
+            <input class="form-control" type="text" name="location" placeholder="Location" value="{{profile.location}}">
+        </div>
+        <input class="btn btn-primary login-buttom save" type="submit" value="Save">		
+    </form>
+</div>
+<hr />
+<div class="card">
+    <div class="card-body">
+	    <center>		    
+	        <button onclick="window.location.href='{% url 'customer_view' %}'"> Go to Customer View</button>
+            
+        </center>        
+	</div>
+</div>
+
+<hr />
+{% endblock %}

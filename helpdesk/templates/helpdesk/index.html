@@ -1,0 +1,86 @@
+{% extends "helpdesk/layout.html" %}
+
+{% block body %}
+<style>
+  
+  
+</style>
+
+<div id="content">
+    {% if user.is_authenticated %}
+	    <center><strong class="all_tickets">Your Personal Support Tickets</strong></center>	    
+	{% else %}	   
+	    <center><h3 class="label-account">Log in to Access HelpDesk Dynamics</h3></center>
+		<hr />
+		<center><img id="dynamics" class="img-fluid" src="{{dynamics.image.url}}" alt="connect" style="max-height:340px"></center>
+	{% endif %}
+{% if user.is_authenticated %}
+
+<div class="container">	
+
+    {% for ticket in tickets %}		
+	<div class="card border-secondary mb-3 ticket-object{{ticket.id}}">
+        <h5 class="card-header">
+		    <b id="ticket_title{{ticket.id}}">{{ticket.title}}</b>		    
+		    <object align="right">			
+		    {% if ticket.closed == False %}
+			    <strong class="open_update">Ticket No. ({{ticket.id}}) is Open</strong>
+				<i class="fa fa-bug" aria-hidden="true"></i>
+			{% else %}
+			    <strong class="close_update">Ticket No. ({{ticket.id}}) is Closed</strong>
+				<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+			{% endif %}		
+			 Owner: <a href="{% url 'profile' ticket.user.username %}">{{ticket.user.username|capfirst}}</a>
+			</object>		    
+		</h5>
+        <div class="card-body text-secondary">
+            <h6 class="card-subtitle mb-2 text-muted">{{ticket.date}}</h6>
+            <p class="card-text" id="tweet{{ticket.id}}"> {{ ticket.text }}</p>			
+			<form action="#" method="POST" id="form_edit{{ticket.id}}" data-id="{{ticket.id}}" style="display: none">
+                {% csrf_token %}
+				<div class="form-group" value="{{ticket.title}}">
+                    {{ edit_ticket.edit_title }}
+                </div>
+                <div class="form-group">
+                    {{ edit_ticket.edit_text }}
+                </div>
+                <div id="ticket_alert{{ticket.id}}">
+                </div>
+                <div id="ticket_button" onClick="window.location.reload();">
+                <button type="button" data-id="{{ticket.id}}" id="close_btn{{ticket.id}}" class="btn btn-secondary"
+                    data-dismiss="modal" >Close</button>
+                <button type="submit" class="btn btn-primary" id="btnSave">Save changes</button>
+                </div>
+            </form>	
+            {%if ticket.user_id == user.id %}			
+                {% if ticket.closed == False %}
+				    <a href="#" class="card-link" id="edit_link_{{ticket.id}}" data-id="{{ticket.id}}" data-toggle="modal">Edit</a>				
+			    {% endif %}	
+            {% endif %}				
+            {% if ticket.closed == False %}			
+            <div data-id="{{ticket.id}}"             			
+				class="card-link {% if ticket.ticketrank_set.count > 0 %} fas fa-bug{%else%} fa fa-desktop{% endif %}">&nbsp<small
+                class="text-muted">{{ticket.ticketrank_set.count}}</small><small> Importance level</small>					
+            </div>	
+            {% else %}	
+            <div> <i class="fa fa-thumbs-up" aria-hidden="true"></i>&nbsp<small
+                class="text-muted">{{ticket.ticketrank_set.count}}</small><b> Ticket Closed</b>					
+            </div>                
+            {% endif %}
+			{% if user.is_authenticated %}
+			<object align="right">
+                <small>Customer Name: <b>{{ticket.customer}}</b></small>			
+                <a href="{% url 'ticket_view' ticket=ticket.id %}" class="btn btn-primary"> Update Ticket<i class="fa fa-angle-double-right"></i></a>            
+            </object>
+            {% endif %}			
+        </div>		
+    </div>     
+    {% empty %}
+    <center><h3 class="update_info">No Support Tickets</h3></center>
+    {% endfor %}
+
+</div>
+	
+{% endif %}
+
+{% endblock %}

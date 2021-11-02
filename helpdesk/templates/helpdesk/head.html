@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="{% url 'index' %}"><b style="font-size:30px;">helpdesk</b></a>
+          
+            <div>
+			{% with request.resolver_match.url_name as url_name %}
+              <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item {% if url_name == 'profile' %}active{% endif %}" >
+                        <a class="nav-link active" aria-current="page" href="{% url 'profile' user.username %}"><strong>{{ user.username|capfirst }}</strong></a>
+                    </li>	                   
+                    <li class="nav-item {% if url_name == 'escalate' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'escalate' %}"><strong>Escalated Tickets</strong></a>
+                    </li>
+					<li class="nav-item {% if url_name == 'view_reports' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'view_reports' %}"><strong>Ticket Reports</strong></a>
+                    </li>					
+				    {% if request.user.access != 'Regular' %}
+		                <li class="nav-item {% if url_name == 'super' %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'super' %}"><strong>Super Access</strong></a>
+                        </li>
+				    {% endif %}
+			        <li class="nav-item {% if url_name == 'logout' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'logout' %}"><strong>Log Out</strong></a>
+                    </li>			
+		        {% else %}
+                    <li class="nav-item {% if url_name == 'login' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'login' %}"><strong>Log In</strong></a>
+                    </li>
+                    <li class="nav-item {% if url_name == 'register' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'register' %}"><strong>Register</strong></a>
+                    </li>
+                {% endif %}	
+              </ul>
+			{% endwith %}
+            </div>
+    </nav>
+    
+{% if user.is_authenticated %}
+    <div class="card">
+        <div class="card-body">	
+            <img class="img-fluid" src="{{support.image.url}}" alt="Profile Picture" style="max-height:100px">                      
+		        <strong id="access_type">{{user.username|title}}, your Access Level is <u>{{user.access}}</u></strong>	            			
+		    <object align="right" class="profile_info"> 
+		        <span class="btn-total-follow"><strong>Job Role: {{user.role}}</strong> </span>			
+		    </object>
+        </div>
+    </div>
+{% else %}	
+	<div class="card">
+        <div class="card-body">	               
+            <img class="img-fluid" src="{{support.image.url}}" alt="Profile Picture" style="max-height:100px">            
+		    <strong id="welcome" class="no_profilename">Welcome to Helpdesk Dynamics</strong>
+		    <object align="right" class="profile_info"> 
+		        <span>
+				    <strong><a class="nav-link" href="{% url 'login' %}">Log In</a><strong>				
+				    
+				    <strong><a class="nav-link" href="{% url 'register' %}">Register</a></strong> 
+				
+				</span> 			
+		    </object>
+        </div>
+    </div>
+{% endif %}

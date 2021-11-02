@@ -1,0 +1,17 @@
+{% if user.is_authenticated %}
+<center><b>Assign a Support Ticket to {{profile_account|capfirst}}</b></center>
+<div class="card" id="profile_form" style="padding:20px;">
+    <div class="card-body">
+        <form action="{% url 'profile_ticket' profile_account.username %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+			{{ form.as_p }}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            </div>            
+        </form>
+		{% if message %}
+            <div class="data-info">{{ message }}</div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,31 @@
+{% if user.is_authenticated %}
+<div class="alert alert-success"  role="alert">
+    <center><h5>Subordinates</h5></center>
+	<center><b id="downline" ></b></center>
+</div>
+<hr />    
+	
+<b>User:</b> {{profile_account.username|capfirst}}
+
+<h6>Subordinates</h6>
+<ul>
+    {% for person in junior %}
+	    <li>{{ person.junior|capfirst }}</li>
+	{% empty %}	
+		<li>No Subordinate</li>
+	{% endfor %}
+</ul>	
+Total Subordinates = {{junior_count}}
+<h6>Add or Remove Subordinate</h6>
+
+<form action="{% url 'subordinate' profile_account.username %}" method="post">
+    {% csrf_token %}
+	<select name="username">
+	    {% for user in non_senior %}
+		    <option value="{{ user.username}}">{{user.username|capfirst}} </option>
+	    {% endfor %}
+	</select>
+	<input type="submit" onclick="document.querySelector('#downline').innerHTML = 'Successfully Updated!';">
+</form>
+<hr />
+{% endif %}

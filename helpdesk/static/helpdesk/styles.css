@@ -1,0 +1,227 @@
+body{   
+    margin: 0;
+	background-color:  white;
+}
+
+.wrapper{
+padding: 30px;
+width:70%;
+height:500px;
+margin: 50px;
+font-family: calibri;
+Background: #f2f2f2;
+
+}
+
+#upline, #downline{
+	color: #000066;
+}
+
+#role{
+	color:  #cc0000;
+}
+
+.fa-bug{
+    color: red !important;
+    cursor: pointer;
+	font-weight:20px;
+}
+
+.fa-desktop{
+    color: blue !important;
+    cursor: pointer;
+}
+
+.fa-thumbs-up{
+    color: blue !important;
+    cursor: pointer;
+}
+
+.btn-middle{
+  text-align: center;  
+}
+
+.ticket-title{
+  font-family: Franklin Gothic Heavy;
+  font-size: 26px;
+}
+
+.ticket-description{
+  font-family: Franklin Gothic Medium;
+} 
+.btn-ticket{
+  margin-top: 10px;
+  background-color: #2e004d;
+  color: white;
+}
+
+.btn-close{
+  margin-top: 10px;
+  background-color: #ff0066;
+  color: white;
+}
+
+.ticket-description{
+	background-color: white;
+}
+
+.btn-send-comment{
+  margin-bottom: 10px;
+}
+
+#open_ticket, .close_update{
+	color:blue;
+}
+.open_update{
+	color:black;
+}
+.open_update, .close_update{
+	font-family: sans-serif;
+	font-size: 16px;
+}
+#closed_ticket{
+	color:red;
+}
+
+#open_ticket, #closed_ticket{
+	font-size: 24px;
+}	
+
+#product{
+  padding: 10px;
+}
+
+.comment {
+  background-color: white;
+  border: 1px solid #1a000d;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.add-comment {
+  margin-top: 40px;
+}
+
+.comment-cont{
+  font-family: calibri;
+}
+
+.btn-primary:hover{
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-ticket:hover{
+	color: yellow;
+}
+
+.btn-right{
+  text-align: right;
+}
+
+#ticket_title{
+	left: -140px;
+	color: #111109;	
+}
+
+#edit_ticket{
+	font-size:22px;
+}
+.hide{
+    display:none;
+}
+.data-info, #access_update{
+	color:#00ff00;
+}
+.all_tickets, #profile_name{	
+	font-size:30px;
+}
+
+#profile_name{	
+	font-size:20px;
+}
+.no_profilename, #access_type{
+	font-size:30px;
+}
+
+.label-account{
+	color:blue;
+}
+.all_tickets, .profile_info, .title{
+	color:#1a75ff;	
+}
+#report_line{
+	color: black;
+}
+.main, #tickets-view, #summary-view{
+    padding: 10px;		
+}
+
+.sidebar {
+    background-color: #f0f0f0;    
+    padding: 10px;	
+}
+
+#profile_name, .no_profilename, #access_type, #admin_level{	
+	color:#000066;
+	padding:10px;
+}
+
+#update_picture, .update_info, #tickets-view, #summary_header{
+	color:black;
+ }
+ 
+ table {
+    border: 2px solid black;
+    border-collapse: collapse;    
+	font-size: 16px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: center;    
+}
+
+th {
+    background-color: lightgray;
+    color: #e60000;
+}	
+			
+td {
+    background-color: white;
+	color: #660066;
+}	
+
+@keyframes grow {
+    from {
+        max-height: 20px;
+    }
+    to  {
+        max-height: 340px;
+    }
+}
+
+#dynamics {
+    animation-name: grow;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes move {
+    from {
+        left: 80%;
+        }
+    to  {
+        left: 1%;
+    }
+}
+
+#welcome {
+    position: relative;
+    animation-name: move;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}
+

@@ -1,0 +1,59 @@
+{% extends "helpdesk/layout.html" %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+<hr />
+<div class="card">
+    <div class="card-body">
+	    <center>		    
+	        <button class="btn btn-primary" onclick="window.location.href='{% url 'index' %}'"> Back to Dashboard</button>
+            
+        </center>        
+	</div>
+</div>
+<hr />
+<center><h5 class="label-account">Registered Customers</h5></center>
+<center>	
+    {% if customers %}    
+        <table>
+            <tr>
+			    <th>ID</th>
+                <th>Customer</th>
+                <th>Firstname</th>
+				<th>Lastname</th>
+				<th>Email</th>
+                <th>Phone number</th>
+				<th>Company</th>
+				<th>Location</th>
+            </tr>
+		{% for customer in customers %}
+            <tr>
+                <td> 
+				    <a href="{% url 'edit_customer' customer.id %}">
+				        <u><b>{{customer.id}}</b></u>
+					</a>
+				</td>
+				<td>
+				    <a href="{% url 'edit_customer' customer.id %}">
+				    <u><b>{{customer.customer|title}}</b></u>
+					</a>
+				</td>
+                <td>{{customer.firstname|title}}</td>
+				<td>{{customer.lastname|title}}</td>
+				<td>{{customer.email}}</td>
+				<td>{{customer.phone_no}}</td>
+                <td>{{customer.company}}</td>
+				<td>{{customer.location|title}}</td>                
+            </tr>	
+            
+        {% endfor %}           
+               
+        </table> 
+	{% endif %}	
+</center>
+<hr />
+{% endif %} 
+
+
+{% endblock %}

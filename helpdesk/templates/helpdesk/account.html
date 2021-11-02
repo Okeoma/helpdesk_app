@@ -1,0 +1,49 @@
+{% extends "helpdesk/layout.html" %}
+
+{% block body %}
+
+{% include "helpdesk/profile_picture.html" %}
+<hr />
+<div class="container Account">
+    {% if message %}
+        <div class="data-info">{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'account' username=request.user %}" method="POST" >
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="label-account"><strong>First Name</strong></label>
+            <input class="form-control" type="text" name="first_name" placeholder="First Name" value="{{user.first_name|title}}">
+        </div>
+        <div class="form-group">
+            <label class="label-account"><strong>Last Name</strong></label>
+            <input class="form-control" type="text" name="last_name" placeholder="Last Name" value="{{user.last_name|title}}">
+        </div>
+        <div class="form-group">
+            <label class="label-account"><strong>Email</strong></label>
+            <input class="form-control" type="email" name="email" placeholder="Email" value="{{user.email}}">
+        </div>
+		<div class="form-group">
+            <label class="label-account"><strong>Role</strong></label>
+            <input class="form-control" type="text" name="role" placeholder="Role" value="{{user.role|title}}">
+        </div>	
+        <div class="form-group">
+            <label class="label-account"><strong>Location</strong></label>
+            <input class="form-control" type="text" name="location" placeholder="Location" value="{{user.location|title}}">
+        </div>
+        <input class="btn btn-primary login-buttom save" type="submit" value="Save">		
+    </form>
+</div>
+<hr />
+<div class="card">
+    <div class="card-body">
+	    <center>
+		    <h4> What would you like to do?</h4>
+	        <button onclick="window.location.href='{% url 'profile' username=request.user %}'"> Go to Profile Page</button>
+            <button onclick="window.location.href='{% url 'add_image' %}'">Upload Profile Image</button>
+        </center>        
+	</div>
+</div>
+
+<hr />
+{% endblock %}
